@@ -10,7 +10,7 @@ open(url, "User-Agent" => "iTunes/12.0.1", "X-Apple-Store-Front" => "143462-9"){
 }
 doc = REXML::Document.new(content)
 
-if doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[6]'].text =~ /[0-9]+/ then
+if doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[6]'].text =~ /([0-9])+{9}/ then
   song = doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[8]'].text
 else
   song = doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[6]'].text
