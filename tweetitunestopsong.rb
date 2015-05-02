@@ -10,12 +10,21 @@ open(url, "User-Agent" => "iTunes/12.0.1", "X-Apple-Store-Front" => "143462-9"){
 }
 doc = REXML::Document.new(content)
 
-if doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[6]'].text =~ /([0-9])+{9}/ then
-  song = doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[8]'].text
-else
-  song = doc.elements['Document/TrackList/plist/dict/array/dict[1]/string[6]'].text
+elem = doc.elements["Document/TrackList/plist/dict/array/dict"]
+array = Array.new elem.map(&:to_s)
+j=0
+song=Array.new
+artist=Array.new
+array.each do |c|
+ if c =~ /artistName/ then # artist name
+   artist = array[j+1].gsub(/<\/?[^>]*>/, "")
+ end
+ if c =~ /itemName/ then # song name
+   song = array[j+1].gsub(/<\/?[^>]*>/, "")
+   break
+ end
+ j+=1
 end
-artist = doc.elements['Document/TrackList/plist/dict/array/dict[1]/string'].text
 
 #tweet
 config = {
