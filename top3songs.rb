@@ -5,10 +5,12 @@ require 'twitter'
 
 #get information from iTunes Store
 url = 'https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewTop?genreId=34&id=1000&popId=1'
-content = String.new
-open(url,"User-Agent" => "iTunes/12.0.1 (Macintosh; OS X 10.10.1) AppleWebKit/0600.1.25","X-Apple-Store-Front" => "143462-9"){|f|
-  f.each_line {|line| content += line}
-}
+ua = "iTunes/12.0.1 (Macintosh; OS X 10.10.1) AppleWebKit/0600.1.25"
+x_apple_store_front = "143462-9"
+
+content = open(url, "User-Agent" => ua, "X-Apple-Store-Front" => x_apple_store_front) do |f|
+  f.read
+end
 doc = REXML::Document.new(content)
 
 songs = Array.new
